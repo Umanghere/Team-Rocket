@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All in One Study Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h1>Video Player</h1>
+        </div>
+        <div>
+            <input type="text" id="videoUrl" placeholder="Paste YouTube video link here" />
+            <input type="number" id="startTime" placeholder="Start time (in seconds)" />
+            <button id="playButton"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <br>
+        <div id="videoContainer"></div>
+        <div id="controls" class="hidden">
+            <button id="captureTimeButton">Time Stamps</button>
+            <ul id="timeList"></ul>
+        </div>
+    </div>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="script.js"></script>
+</body>
+</html>
