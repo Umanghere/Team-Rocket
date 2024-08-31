@@ -55,20 +55,77 @@ document.getElementById('captureTimeButton').addEventListener('click', function 
 
             timeList.appendChild(listItem);
             timestampCounter++;
-        } else {
-            console.log(`Timestamp ${formattedTime} already captured.`);
         }
     }
 });
 
 function extractVideoId(url) {
-    const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=)([^&\n?#]+)/;
-    const matches = url.match(regex);
-    return matches ? matches[1] : null;
+    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
 }
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+
+// Toggle Chatbot visibility
+document.getElementById('toggleChatbot').addEventListener('click', function (event) {
+    event.preventDefault();
+    document.getElementById('chatbot').classList.toggle('hidden');
+});
+
+document.getElementById('hideChatbotButton').addEventListener('click', function () {
+    document.getElementById('chatbot').classList.add('hidden');
+});
+
+// Handle Chatbot input and display
+document.getElementById('sendChatButton').addEventListener('click', function () {
+    const chatInput = document.getElementById('chatInput').value.trim();
+    if (chatInput) {
+        const chatContent = document.getElementById('chatContent');
+
+        // User's message
+        const userMessage = document.createElement('p');
+        userMessage.textContent = `You: ${chatInput}`;
+        chatContent.appendChild(userMessage);
+
+        // Scroll to the bottom
+        chatContent.scrollTop = chatContent.scrollHeight;
+
+        // Clear input
+        document.getElementById('chatInput').value = '';
+
+        // Chatbot response
+        setTimeout(() => {
+            const botResponse = document.createElement('p');
+            botResponse.textContent = `EaseStudy Bot: ${getBotResponse(chatInput)}`;
+            chatContent.appendChild(botResponse);
+
+            // Scroll to the bottom after bot response
+            chatContent.scrollTop = chatContent.scrollHeight;
+        }, 500); // Delay for a more realistic response
+    }
+});
+
+// Basic function to mimic bot responses
+function getBotResponse(input) {
+    const lowerCaseInput = input.toLowerCase();
+
+    // Simple keywords and responses
+    if (lowerCaseInput.includes('hello') || lowerCaseInput.includes('hi')) {
+        return 'Hello! How can I assist you today?';
+    } else if (lowerCaseInput.includes('how are you')) {
+        return 'I am just a bot, but I\'m here to help you!';
+    } else if (lowerCaseInput.includes('help')) {
+        return 'Sure! I can assist you with using EaseStudy. What do you need help with?';
+    } else if (lowerCaseInput.includes('video')) {
+        return 'To play a video, just paste the YouTube link and click the play button!';
+    } else if (lowerCaseInput.includes('thank you')) {
+        return 'You\'re welcome! Happy studying!';
+    } else {
+        return 'I\'m not sure how to respond to that. Could you try asking something else?';
+    }
 }
